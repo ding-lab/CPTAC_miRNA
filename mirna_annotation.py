@@ -28,11 +28,10 @@ import argparse
 ###########################################################################################
 
 parser = argparse.ArgumentParser(description='miRNA annotation pipeline')
-parser.add_argument('--sample', metavar='s', type=str, nargs='+',
-                   help='sample name')
+parser.add_argument('--sample', type=str, help='sample name', required = True)
                    
 args = parser.parse_args()
-s_name = args[0]
+s_name = args.sample
 ###########################################################################################
 ### Assign filenames and check if they exist
 ###########################################################################################
@@ -47,7 +46,7 @@ samfile = s_name + ".sam"
 ### Prioritization within miRNA annotations based on overlap
 ###########################################################################################
 
-### All mature miRNA sequences will also be present in pre-miRNAs. Thus we need an extra over-lap based prioritization to distinguish mature miRNAs from pre-miRNAs. 
+### All mature miRNA sequences will also be present in pre-miRNAs. Thus we need an extra overlap-based prioritization to distinguish mature miRNAs from pre-miRNAs. 
 ### Mature form is prioritized over pre form.
 
 with open(mirfile, "r") as file:
@@ -124,7 +123,7 @@ ann = comb.copy() # Save the annotation information at this stage for later use 
 ## The code below is in some sense equivalent to running : comb = comb.groupby(['Read_ID', 'Class']).apply(lambda x: x.sample(n=1))
 ## However this is computationally intensive, so we use the lengthy code below. 
 
-randomNum = range(0, comb.shape[0])
+randomNum = list(range(0, comb.shape[0]))
 random.shuffle(randomNum)
 comb['randomNum'] = randomNum
 mhits = comb[comb['Read_ID'].groupby(comb['Read_ID']).transform('size') >1]
