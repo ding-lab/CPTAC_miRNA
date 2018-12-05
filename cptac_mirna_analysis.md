@@ -1,7 +1,7 @@
 CPTAC miRNA-Seq analysis
 ========================
 
-### github: <https://github.com/ding-lab/cptac_mirna>
+### github: <https://github.com/ding-lab/CPTAC_miRNA>
 
 #### Sunantha Sethuraman
 
@@ -11,6 +11,14 @@ Processing description
 ----------------------
 
 The raw data was made available as .fastq.gz files.
+
+Annotation pre-processing:
+
+Annotation information to be used in the pipeline were downloaded from
+miRBase v22 and GENCODE v29. The downloaded GTFs were converted to BED
+format files. For GENCODE, only the transcript variant labeled with the
+'Basic' tag was used since it is the predominant transcript variant.
+Annotations were limited to standard chromosomes Chr 1-22, X,Y and MT.
 
 Adapter trimming:
 
@@ -43,8 +51,8 @@ file was then converted to a BED file and sorted.
 Annotation:
 
 The BED file was annotated using BEDTOOLS 'intersect' and several
-preprocessed annotation files (see annotation pre-processing). A custom
-python script (mirna\_annotation.py) was used to handle multiple
+preprocessed annotation files (see annotation pre-processing above). A
+custom python script (mirna\_annotation.py) was used to handle multiple
 annotations and multi-mapping of the reads to obtain one unique mapping
 per read and one unique annotation per mapping.
 
@@ -73,7 +81,7 @@ miRNAs also map to precursor miRNAs and vice-versa. The priorities were
 assigned by overlap length, allowing a 3 nt additional advantage to
 mature miRNAs. This advantage allow to correct for processing errors
 (biological and sequencing based) and the number 3 was empirically
-determined (see Figure below).
+determined.
 
 Multimapping was resolved based on the same order of priority as above.
 Additionally, multi-maps within the same annotation group were assigned
