@@ -10,7 +10,7 @@
 ###
 ### Purpose: The primary purpose and scope of this script is to processes CPTAC miRNA sequencing data.
 ###
-### Usage: mirna_counting.py -s <sample_name>  -m <mirbase_file>
+### Usage: mirna_counting.py --sample <sample_name>  --mirbase <mirbase_file>
 ###########################################################################################
 
 ###########################################################################################

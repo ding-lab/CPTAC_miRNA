@@ -9,7 +9,7 @@
 ###
 ### Purpose: The primary purpose and scope of this script is to processes CPTAC miRNA sequencing data.
 ###
-### Usage: mirna_annotation.py -s <sample_name>
+### Usage: mirna_annotation.py --sample <sample_name>
 ###########################################################################################
 
 ###########################################################################################
@@ -54,7 +54,10 @@ with open(mirfile, "r") as file:
 
 mirs = mirs.iloc[:, [0,1,2,3,5,6,7,8,9,13,15,16]]
 mirs.columns = ["Chr_read", "Start_read", "End_read", "Read_ID", "Strand", "Chr_ann", "Start_ann", "End_ann", "Annotation", "Class", "Tag", "Overlap" ]
-mirs = mirs.sort_values(['Overlap', 'Class'], ascending = [False, True]).groupby(['Chr_read', 'Start_read', 'End_read', 'Read_ID']).head(1)
+mirs['Overlap_adj'] = mirs['Overlap']
+mirs.loc[mirs['Class'] == "miRNA", 'Overlap_adj'] = mirs.loc[mirs['Class'] == "miRNA", 'Overlap_adj'] +3
+mirs = mirs.sort_values(['Overlap_adj', 'Class'], ascending = [False, True]).groupby(['Chr_read', 'Start_read', 'End_read', 'Read_ID']).head(1)
+mirs = mirs.drop('Overlap_adj', axis=1)
 
 ###########################################################################################
 ### tRNA annotation clean up
@@ -149,6 +152,8 @@ comb = comb.sort_values('Class', ascending = True).groupby('Read_ID').head(1)
 
 comb.to_csv(s_name + "_Annotated.txt", sep='\t', index=False)
 
+"""
+
 ###########################################################################################
 ### SAM file annotation
 ###########################################################################################
@@ -187,3 +192,5 @@ sam_ann = sam_ann[cols]
 ### The output is NOT ready for viewing using samtools. The pipeline will manipulate this further to make it samtools compatible.
 
 sam_ann.to_csv(s_name + "_Annotated.sam", sep='\t', index=False, header=False)
+
+"""
