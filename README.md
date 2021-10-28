@@ -11,55 +11,14 @@ CPTAC miRNA-Seq analysis
 Processing description
 ----------------------
 
-The raw data was made available as .unaln.bam files.
-
----------------------------------------------------------------------------
-
-### Annotation pre-processing:
-
-Annotation information to be used in the pipeline were downloaded from
-miRBase v22 and GENCODE v29. The downloaded GTFs were converted to BED
-format files. For GENCODE, only the transcript variant labeled with the
-'Basic' tag was used since it is the predominant transcript variant.
-Annotations were limited to standard chromosomes Chr 1-22, X,Y and MT.
-
-Unaligned BAM to FASTQ:
-
-The unaligned bams were first converted to fastq.gz files by samtools bam2fq
-
------------------------------------------------------------------------------
-
-### Adapter trimming:
-
-The fastq.gz files were then trimmed using TRIMMOMATIC (Bolger, A. M.,
-Lohse, M., & Usadel, B. (2014). Trimmomatic: A flexible trimmer for
-Illumina Sequence Data. Bioinformatics, btu170) with the adapter
-sequences provided in Adapters.fa. The following constraints were used
-during trimming: 1. Random 4 nucleotides at the start and end of the
-read after adapter trimming were cropped; 2. Any read with average read
-quality &lt; 30 was dropped; 3. Any read with average base quality &lt;
-20 in any sliding window of 10 bases was dropped; 4. Reads shorter than
-15 bases after processing were dropped.
+The raw data was made available as _realn.bam files.
 
 ------------------------------------------------------------------------
 
-### Quality check:
+### Bam2bed:
 
-FASTQC (<https://www.bioinformatics.babraham.ac.uk/projects/fastqc/>)
-was used to quality check the reads before and after trimming to ensure
-adapter removal.
-
-------------------------------------------------------------------------
-
-### Alignment:
-
-The reads were aligned to the human genome (Reference GRCh38) using bwa
-aln, allowing no mismatches. For any given read up to 10 alignments were
-permitted. The aligned SAM file contains one line per read with the
-information about multiple alignments reported in that line. For
-downstream analysis purposes, it was required to have one alignment per
-line and this was accomplished using the xa2multi.pl script. The SAM
-file was then converted to a BED file and sorted.
+Aligned bam was converted to sam files, which was then converted to a BED
+file and sorted.
 
 ------------------------------------------------------------------------
 
